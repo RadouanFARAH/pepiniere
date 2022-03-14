@@ -1,0 +1,123 @@
+<div class="grid">
+
+
+    <div class="liste">
+        <h2 style="color:#206A5D">Liste des fournisseurs :</h2>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_sort">Trier par :</label>
+            <select name="select_sort" [(ngModel)]="order_by" (change)="rechercher(false)" class="form-select"
+                aria-label="Default select example">
+                <option value="ID_FOURNISSEUR">Identifiant</option>
+                <option value="NOM">Nom</option>
+                <option value="VILLE">Ville</option>
+            </select>
+        </div>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_group">Grouper par :</label>
+            <select (change)="rechercher(false)" [(ngModel)]="group_by" name="select_group" class="form-select"
+                aria-label="Default select example">
+                <option value="NOM">Nom</option>
+                <option value="PRENOM">Ville</option>
+            </select>
+        </div>
+
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="!group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+            <thead>
+                <tr>
+                    <th scope="col">Identifiant</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Téléphone</th>
+                    <th scope="col">Ville</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div *ngIf="!data" class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Veuillez patienter...</span>
+                </div>
+                <tr *ngFor="let p of data">
+                    <th scope="row">{{p.ID_FOURNISSEUR}}</th>
+                    <td>{{p.NOM}}</td>
+                    <td>{{p.TEL}}</td>
+                    <td>{{p.VILLE}}</td>
+                    <td>
+                        <p (click)="change(p)" style="margin: 0;padding: 0;text-align: end;cursor: pointer;">
+                            <img src="assets/icon/edit.png" alt="edit">
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+            <thead>
+                <tr>
+                    <th scope="col">{{group_by}}</th>
+                    <th scope="col">NOMBRE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <div *ngIf="!data" class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Veuillez patienter...</span>
+                </div>
+                <tr *ngFor="let p of data">
+                    <th scope="row">{{p[group_by]}}</th>
+                    <td>{{p.NOMBRE}}</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <button style="margin: 10px;" (click)="rechercher(true)" type="button"
+            class="btn btn-primary">Actualiser</button>
+    </div>
+
+
+
+
+    <div class="add">
+        <h2 style="color:#206A5D">Nouveau fournisseur</h2>
+        <form>
+            <div [ngClass]="{'alert':true, 'alert-danger':true, 'visually-hidden':!(clicked&&error)}" role="alert">
+                une erreur est survenue, veuillez réessayer plus tard
+            </div>
+            <div [ngClass]="{'alert':true, 'alert-success':true, 'visually-hidden':!(clicked&&!error)}" role="alert">
+                opération effectué avec succès
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="id" [(ngModel)]="id" placeholder="Identifiant">
+                <label for="id">Identifiant :</label>
+                <p class="alert-danger" *ngIf="id_required">Identifiant est oblégatoire</p>
+
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="nom" [(ngModel)]="nom" placeholder="NOM">
+                <label for="nom">Nom :</label>
+                <p class="alert-danger" *ngIf="nom_required">Nom est oblégatoire</p>
+
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="tel" [(ngModel)]="tel" placeholder="Téléphone">
+                <label for="tel">Téléphone :</label>
+                <p class="alert-danger" *ngIf="tel_required">Téléphone est oblégatoire</p>
+
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="ville" [(ngModel)]="ville" placeholder="ville">
+                <label for="ville">Ville :</label>
+                <p class="alert-danger" *ngIf="ville_required">Ville est oblégatoire</p>
+
+            </div>
+
+            <button *ngIf="!change_btn" (click)="ajouter()" type="button" class="btn btn-success">Ajouter</button>
+            <button *ngIf="change_btn" (click)="update()" type="button" class="btn btn-warning">Modifier</button>
+            <button *ngIf="change_btn" (click)="delete()" type="button" class="btn btn-danger">Supprimer</button>
+            <button *ngIf="change_btn" (click)="rechercher(true)" type="button" class="btn btn-secondary">Annuler</button>
+            <button *ngIf="!change_btn" (click)="rechercher(false)" type="button"
+                class="btn btn-warning">Rechercher</button>
+
+        </form>
+    </div>
+
+
+</div>

@@ -1,0 +1,71 @@
+<div style="margin: 20px; padding: 10px;">
+    <p style="text-align: center;">
+        <button (click)="rechercher(false)" type="button" class="btn btn-primary">Actualiser</button>
+    </p>
+    <!-- ID_PLANTE, CIN_CLIENT, DATE_COMMANDE, QUANTITE_COMMANDE -->
+    <div class="accordion">
+        <h2 style="color:#206A5D">
+            Enregister une nouvelle commande de client
+        </h2>
+        <form>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-danger':true, 'show':(clicked&&error)}"
+                role="alert">
+                une erreur est survenue, veuillez réessayer plus tard
+            </div>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-success':true, 'show':(clicked&&!error)}"
+                role="alert">
+                opération effectué avec succès
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="nom_plante" [(ngModel)]="plante.nom"
+                    placeholder="nom de la plante">
+                <label for="nom_plante">Plante :</label>
+                <p class="alert-danger" *ngIf="prix_required">prix est oblégatoire</p>
+
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="select_group">Sélectionner le client :</label>
+                <select [(ngModel)]="client" name="client" class="form-select" aria-label="Default select example">
+                    <option *ngFor="let c of clients" [value]="c.CIN_CLIENT">{{c.NOM}} {{c.PRENOM}}</option>
+                </select>
+                <p class="alert-danger" *ngIf="prix_required">prix est oblégatoire</p>
+
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="quantity" [(ngModel)]="quantity"
+                    placeholder="Quantité commandée">
+                <label for="quantity">Quantité commandée:</label>
+                <p class="alert-danger" *ngIf="prix_required">prix est oblégatoire</p>
+
+            </div>
+            <!-- <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="prix" [(ngModel)]="prix" placeholder="prix d'achat">
+                <label for="prix">Prix d'achat :</label>
+
+            </div>
+            <div class="buttons">
+                <button *ngIf="!change_btn" (click)="ajouter()" type="button"
+                    class="btn btn-success">Ajouter</button>
+                <button *ngIf="change_btn" (click)="update()" type="button"
+                    class="btn btn-warning">Modifier</button>
+                <button *ngIf="change_btn" (click)="delete()" type="button"
+                    class="btn btn-danger">Supprimer</button>
+                <button *ngIf="change_btn" (click)="rechercher(true)" type="button"
+                    class="btn btn-secondary">Annuler</button>
+                <button *ngIf="!change_btn" (click)="rechercher(false)" type="button"
+                    class="btn btn-warning">Rechercher</button>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

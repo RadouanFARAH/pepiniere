@@ -1,0 +1,182 @@
+<div style="margin: 20px; padding: 10px;">
+    <div class="accordion" style="width: 70%; margin: 0 auto;">
+        <h2 style="color:#206A5D">
+            Enregister une nouvelle intervention du personnel
+        </h2>
+        <form>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-danger':true, 'show':(clicked&&error)}"
+                role="alert">
+                une erreur est survenue, veuillez réessayer plus tard
+            </div>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-success':true, 'show':(clicked&&!error)}"
+                role="alert">
+                opération effectué avec succès
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="nom_plante">Plante :</label>
+                <input type="text" class="form-control" name="nom_plante" [(ngModel)]="plante_nom"
+                    placeholder="nom de la plante">
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="select_group">Sélectionner le personnel :</label>
+                <select [(ngModel)]="personnel" name="personnel" class="form-select"
+                    aria-label="Default select example">
+                    <option *ngFor="let p of personnels" [value]="p.CIN_PERSONNEL">{{p.NOM}} {{p.PRENOM}}</option>
+                </select>
+                <p class="alert-danger" *ngIf="personnel_required">personnel est oblégatoire</p>
+
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="detail">Détail de l'intervention:</label>
+                <textarea class="form-control" name="detail" [(ngModel)]="detail" placeholder="Détail intervention"
+                    cols="30" rows="10"></textarea>
+
+                <p class="alert-danger" *ngIf="detail_required">Détail est oblégatoire</p>
+
+            </div>
+            <div class="buttons">
+                <button (click)="ajouter()" type="button" class="btn btn-success">Ajouter</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="liste">
+        <h2 style="color:#206A5D">Historique des interventions :</h2>
+
+        <div class="accordion" style="margin-bottom: 10px;">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Faire une recherche
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <form class="search">
+
+                            <div class="input-group mb-3">
+                                <label style="width:125px" for="nom_plante">Plante :</label>
+                                <input style="width:125px; margin-right:10px" type="text" class="form-control"
+                                    name="plante" [(ngModel)]="plante" placeholder="nom de la plante">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <label style="width:125px" for="__personnel">Personnel :</label>
+                                <input style="width:125px; margin-right:10px" type="text" class="form-control"
+                                    name="__personnel" [(ngModel)]="__personnel" placeholder="CIN du personnel">
+                            </div>
+                            <div class="input-group mb-3">
+                                <label style="width:125px;" for="year">Date :</label>
+
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="year"
+                                        [(ngModel)]="date_intervention_year" placeholder="Année">
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="month"
+                                        [(ngModel)]="date_intervention_month" placeholder="Mois">
+                                    <p style="margin-left: 5px;"> 1 - 12</p>
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="day" [(ngModel)]="date_intervention_day"
+                                        placeholder="Jour">
+                                    <p style="margin-left: 5px;">1 - 31</p>
+                                </div>
+
+                            </div>
+                            <div class="input-group mb-3">
+                                <label style="width:125px;" for="hour">Temps :</label>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="hour"
+                                        [(ngModel)]="date_intervention_hour" placeholder="Heure">
+                                    <p style="margin-left: 5px;">00 - 23</p>
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="minute"
+                                        [(ngModel)]="date_intervention_minute" placeholder="Minute">
+                                    <p style="margin-left: 5px;">00 - 59</p>
+                                </div>
+
+                            </div>
+
+                        </form>
+                        <button style="margin: 10px;" (click)="rechercher(false)" type="button"
+                            class="btn btn-primary">Chercher</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_sort">Trier par :</label>
+            <select name="select_sort" [(ngModel)]="order_by" (change)="rechercher(false)" class="form-select"
+                aria-label="Default select example">
+                <option value="DATE_COMMANDE">Date</option>
+            </select>
+        </div>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_group">Grouper par :</label>
+            <select (change)="rechercher(false)" [(ngModel)]="group_by" name="select_group" class="form-select"
+                aria-label="Default select example">
+                <option value="PLANTE">Plante</option>
+                <option value="PERSONNEL">Personnel</option>
+            </select>
+        </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="!group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+                <thead>
+                    <tr>
+                        <th scope="col">Plante</th>
+                        <th scope="col">Personnel</th>
+                        <th scope="col">CIN</th>
+                        <th scope="col">Date intervention</th>
+                        <th scope="col">Détail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div *ngIf="!data" class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Veuillez patienter...</span>
+                    </div>
+                    <tr *ngFor="let p of data">
+                        <th scope="row">{{p.PLANTE}}</th>
+                        <td>{{p.PERSONNEL}}</td>
+                        <td>{{p.CIN_PERSONNEL}}</td>
+                        <td>{{p.DATE_INTERVENTION | date: 'dd/MM/y h:mm a'}}</td>
+                        <td>{{p.DETAIL}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+                <thead>
+                    <tr>
+                        <th scope="col">{{group_by}}</th>
+                        <th scope="col">Nombre d'intervention</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div *ngIf="!data" class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Veuillez patienter...</span>
+                    </div>
+                    <tr *ngFor="let p of data">
+                        <th scope="row">{{p[group_by]}}</th>
+                        <td>{{p.NOMBRE_INTERVENTION}} intervention
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="total">{{total}} intervention en total</p>
+        <button style="margin: 10px;" (click)="rechercher(true)" type="button"
+            class="btn btn-primary">Actualiser</button>
+    </div>
+
+</div>

@@ -1,0 +1,184 @@
+<div style="margin: 20px; padding: 10px;">
+    <div class="accordion" style="width: 70%; margin: 0 auto;">
+        <h2 style="color:#206A5D">
+            Enregister une nouvelle commande de client
+        </h2>
+        <form>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-danger':true, 'show':(clicked&&error)}"
+                role="alert">
+                une erreur est survenue, veuillez réessayer plus tard
+            </div>
+            <div style="display: none;" [ngClass]="{'alert':true, 'alert-success':true, 'show':(clicked&&!error)}"
+                role="alert">
+                opération effectué avec succès
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="nom_plante">Plante :</label>
+                <input type="text" class="form-control" name="nom_plante" [(ngModel)]="plante_nom"
+                    placeholder="nom de la plante">
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="select_group">Sélectionner le client :</label>
+                <select [(ngModel)]="client" name="client" class="form-select" aria-label="Default select example">
+                    <option *ngFor="let c of clients" [value]="c.CIN_CLIENT">{{c.NOM}} {{c.PRENOM}}</option>
+                </select>
+                <p class="alert-danger" *ngIf="client_required">client est oblégatoire</p>
+
+            </div>
+            <div class="input-group mb-3">
+                <label style="width:125px" for="quantity">Quantité commandée:</label>
+
+                <input type="text" class="form-control" name="quantity" [(ngModel)]="quantity"
+                    placeholder="Quantité commandée">
+                <p class="alert-danger" *ngIf="quantity_required">Quantité est oblégatoire</p>
+
+            </div>
+            <div class="buttons">
+                <button (click)="ajouter()" type="button" class="btn btn-success">Ajouter</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="liste">
+        <h2 style="color:#206A5D">Historique des commandes :</h2>
+
+        <div class="accordion" style="margin-bottom: 10px;">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Faire une recherche
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <form class="search">
+
+                            <div class="input-group mb-3">
+                                <label style="width:125px" for="nom_plante">Plante :</label>
+                                <input style="width:125px; margin-right:10px" type="text" class="form-control"
+                                    name="plante" [(ngModel)]="plante" placeholder="nom de la plante">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <label style="width:125px" for="__client">Client :</label>
+                                <input style="width:125px; margin-right:10px" type="text" class="form-control"
+                                    name="__client" [(ngModel)]="__client" placeholder="CIN du client">
+                            </div>
+                            <div class="input-group mb-3">
+                                <label style="width:125px;" for="year">Date :</label>
+
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="year" [(ngModel)]="date_commande_year"
+                                        placeholder="Année">
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="month" [(ngModel)]="date_commande_month"
+                                        placeholder="Mois">
+                                    <p style="margin-left: 5px;"> 1 - 12</p>
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="day" [(ngModel)]="date_commande_day"
+                                        placeholder="Jour">
+                                    <p style="margin-left: 5px;">1 - 31</p>
+                                </div>
+
+                            </div>
+                            <div class="input-group mb-3">
+                                <label style="width:125px;" for="hour">Temps :</label>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="hour" [(ngModel)]="date_commande_hour"
+                                        placeholder="Heure">
+                                    <p style="margin-left: 5px;">00 - 23</p>
+                                </div>
+                                <div>
+                                    <input (keypress)="preventCaracters($event)" style="width:125px; margin-right:10px"
+                                        type="text" class="form-control" name="minute"
+                                        [(ngModel)]="date_commande_minute" placeholder="Minute">
+                                    <p style="margin-left: 5px;">00 - 59</p>
+                                </div>
+
+                            </div>
+
+                        </form>
+                        <button style="margin: 10px;" (click)="rechercher(false)" type="button"
+                            class="btn btn-primary">Chercher</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_sort">Trier par :</label>
+            <select name="select_sort" [(ngModel)]="order_by" (change)="rechercher(false)" class="form-select"
+                aria-label="Default select example">
+                <option value="DATE_COMMANDE">Date</option>
+                <option value="QUANTITE_COMMANDE">Quantité</option>
+            </select>
+        </div>
+        <div class="input-group  mb-3">
+            <label style="width:125px" for="select_group">Grouper par :</label>
+            <select (change)="rechercher(false)" [(ngModel)]="group_by" name="select_group" class="form-select"
+                aria-label="Default select example">
+                <option value="PLANTE">Plante</option>
+                <option value="CLIENT">Client</option>
+            </select>
+        </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="!group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+                <thead>
+                    <tr>
+                        <th scope="col">Plante</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">CIN</th>
+                        <th scope="col">Date commande</th>
+                        <th scope="col">quantité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div *ngIf="!data" class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Veuillez patienter...</span>
+                    </div>
+                    <tr *ngFor="let p of data">
+                        <th scope="row">{{p.PLANTE}}</th>
+                        <td>{{p.CLIENT}}</td>
+                        <td>{{p.CIN_CLIENT}}</td>
+                        <td>{{p.DATE_COMMANDE | date: 'dd/MM/y h:mm a'}}</td>
+                        <td>{{p.QUANTITE_COMMANDE}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" *ngIf="group_by">
+            <table class="table table-bordered table-striped mb-0"  >
+                <thead>
+                    <tr>
+                        <th scope="col">{{group_by}}</th>
+                        <th scope="col">Quantité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div *ngIf="!data" class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Veuillez patienter...</span>
+                    </div>
+                    <tr *ngFor="let p of data">
+                        <th scope="row">{{p[group_by]}}</th>
+                        <td>{{p.QUANTITE_COMMANDE}} {{group_by=='PLANTE'?'plante vendue':group_by=='CLIENT'?'plante
+                            achetée':''}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="total">{{total}} {{group_by=='PLANTE'?'plante vendue':group_by=='CLIENT'?'plante achetée':' plante'}}
+            en total</p>
+        <button style="margin: 10px;" (click)="rechercher(true)" type="button"
+            class="btn btn-primary">Actualiser</button>
+    </div>
+
+</div>

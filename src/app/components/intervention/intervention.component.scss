@@ -1,0 +1,23 @@
+.grid {
+    // display: grid;
+    // grid-template-columns: 70% 30%;
+    display: flex;
+    background-color: #f09ddb52;
+
+}
+.btn{
+    margin: 10px;
+}
+.liste{
+    padding: 25px;
+    flex: 2;
+}
+
+.add{
+    padding: 25px;
+    flex: 1;
+
+}
+tr:hover{
+    background: #68d3e561;
+}

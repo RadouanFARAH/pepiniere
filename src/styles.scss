@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: retroica;
+  src: url(assets/font/retroica.ttf);
+}
+
+.navbar {
+  opacity: 0.8;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+}
+
+.navbar-expand-lg .navbar-nav {
+  flex-direction: row;
+}
+.navbar-expand-lg .navbar-nav .nav-link {
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0 !important;
+}
+* {
+  scroll-behavior: smooth;
+}
+
+h1,
+h2 {
+  box-shadow: 0px 0px 15px aliceblue;
+}
+.show {
+  display: block !important;
+  visibility: visible !important;
+}
+.total {
+  color: #0faf21;
+  background: white;
+  padding: 10px;
+  width: fit-content;
+}
+.my-custom-scrollbar {
+  position: relative;
+  height: 350px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
+}

@@ -1,0 +1,30 @@
+.grid {
+    // display: grid;
+    // grid-template-columns: 70% 30%;
+    display: flex;
+    background-color: #68d5ee52;
+}
+.btn {
+    margin: 10px;
+}
+.liste {
+    padding: 25px;
+    flex: 2;
+}
+
+.add {
+    padding: 25px;
+    flex: 1;
+}
+tr:hover {
+    background: #68e56a61;
+}
+
+.my-custom-scrollbar {
+    position: relative;
+    height: 250px;
+    overflow: auto;
+}
+.table-wrapper-scroll-y {
+    display: block;
+}

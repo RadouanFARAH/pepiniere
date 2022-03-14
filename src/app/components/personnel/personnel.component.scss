@@ -1,0 +1,24 @@
+.grid {
+    display: flex;
+    background-color: #eff09d52;
+
+}
+.btn{
+    margin: 10px;
+}
+.liste{
+    padding: 25px;
+    flex: 2;
+}
+
+.add{
+    padding: 25px;
+    flex: 1;
+
+}
+
+tr:hover{
+    background: #a45fe361;
+}
+
+

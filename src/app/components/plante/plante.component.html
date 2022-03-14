@@ -1,0 +1,131 @@
+<div style="scroll-behavior: smooth;">
+    <div id="stock"></div>
+    <div class="stock" >
+        <h1 style="color:#324705; text-align: center; margin: 20px;">Nos plantes produites à la pépinière : </h1>
+        <div *ngIf="!data" class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Veuillez patienter...</span>
+        </div>
+        <div class="cards">
+            <div *ngFor="let p of data" class="card" style="width: 16rem;
+            margin: 10px;">
+                <div style="margin: 5px; padding: 5px; cursor: pointer;" (click)="change(p)">
+                    <p style="margin: 0;padding: 0;text-align: end;">
+                        <img src="assets/icon/edit.png" alt="edit">
+                    </p>
+                </div>
+                <img style="width: 200px; margin: 0 auto;" src="assets/images/plant.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div class="infos">
+                        <h5 class="card-title"><strong class="black">Identifiant :</strong> {{p.ID_PLANTE}}</h5>
+                        <h5 class="card-title"><strong class="black">Nom :</strong> {{p.NOM}}</h5>
+                        <h5 class="card-title"><strong class="black">Prix :</strong>{{p.PRIX}}</h5>
+                        <h5 class="card-title"><strong class="black">Stock :</strong>{{p.STOCK}}</h5>
+                        <h5 class="card-title"><strong class="black"></strong>{{p.quantite_vendu?p.quantite_vendu:0}} plante vendue</h5>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="stock">
+        <h1 style="color:#324705; text-align: center; margin: 20px;">Les 5 plantes les plus vendus : </h1>
+        <div *ngIf="!plus_vendus" class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Veuillez patienter...</span>
+        </div>
+        <div class="cards">
+            <div *ngFor="let p of plus_vendus" class="card card_gold" style="width: 16rem;
+            margin: 10px;">
+                <div style="margin: 5px; padding: 5px; cursor: pointer;" (click)="change(p)">
+                    <p style="margin: 0;padding: 0;text-align: end;">
+                        <img src="assets/icon/edit.png" alt="edit">
+                    </p>
+                </div>
+                <img style="width: 200px; margin: 0 auto;" src="assets/images/plant.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div class="infos">
+                        <h5 class="card-title"><strong class="black">Identifiant :</strong> {{p.ID_PLANTE}}</h5>
+                        <h5 class="card-title"><strong class="black">Nom :</strong> {{p.NOM}}</h5>
+                        <h5 class="card-title"><strong class="black">Prix :</strong>{{p.PRIX}}</h5>
+                        <h5 class="card-title"><strong class="black">Stock :</strong>{{p.STOCK}}</h5>
+                        <h5 class="card-title"><strong class="black"></strong>{{p.quantite_vendu?p.quantite_vendu:0}} plante vendue</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div style="margin: 20px; padding: 10px;">
+        <p style="text-align: center;">
+            <button (click)="rechercher(false)" type="button" class="btn btn-primary">Actualiser la
+                liste</button>
+        </p>
+        <div class="accordion">
+            <h2 *ngIf="!change_btn" style="color:#206A5D">
+                Ajouter une nouvelle plante au stock
+            </h2>
+            <form>
+                <div style="display: none;" [ngClass]="{'alert':true, 'alert-danger':true, 'show':(clicked&&error)}"
+                    role="alert">
+                    une erreur est survenue, veuillez réessayer plus tard
+                </div>
+                <div style="display: none;" [ngClass]="{'alert':true, 'alert-success':true, 'show':(clicked&&!error)}"
+                    role="alert">
+                    opération effectué avec succès
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="id_plante" [(ngModel)]="id_plante"
+                        placeholder="ID plante">
+                    <label for="id_plante">Identifiant :</label>
+                    <p class="alert-danger" *ngIf="id_plante_required">id plante est oblégatoire</p>
+
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="nom" [(ngModel)]="nom" placeholder="NOM">
+                    <label for="nom">Nom :</label>
+                    <p class="alert-danger" *ngIf="nom_required">Nom est oblégatoire</p>
+
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="quantity" [(ngModel)]="quantity"
+                        placeholder="quantité à ajouté">
+                    <label for="quantity">quantité :</label>
+                    <p class="alert-danger" *ngIf="quantity_required">quantité est oblégatoire</p>
+
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="prix" [(ngModel)]="prix" placeholder="prix d'achat">
+                    <label for="prix">Prix d'achat :</label>
+                    <p class="alert-danger" *ngIf="prix_required">prix est oblégatoire</p>
+
+                </div>
+                <div class="buttons">
+                    <button *ngIf="!change_btn" (click)="ajouter()" type="button"
+                        class="btn btn-success">Ajouter</button>
+                    <button *ngIf="change_btn" (click)="update()" type="button"
+                        class="btn btn-warning">Modifier</button>
+                    <button *ngIf="change_btn" (click)="delete()" type="button"
+                        class="btn btn-danger">Supprimer</button>
+                    <button *ngIf="change_btn" (click)="rechercher(true)" type="button"
+                        class="btn btn-secondary">Annuler</button>
+                    <button *ngIf="!change_btn" (click)="rechercher(false)" type="button"
+                        class="btn btn-warning">Rechercher</button>
+                </div>
+                <div *ngIf="change_btn" class="options">
+                    <a style="width: 150px;background-color: #206A5D;" (click)="gotoCommande()" 
+                        class="btn btn-primary">Commande</a>
+                    <a style="width: 150px;background-color: #206A5D;" (click)="gotoFourniture()"
+                        class="btn btn-primary">Fourniture</a>
+                    <a style="width: 150px;background-color: #206A5D;"  (click)="gotoIntervention()"
+                        class="btn btn-primary">Intervention</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div id="accordion"></div>
+
+</div>
